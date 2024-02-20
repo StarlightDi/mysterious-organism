@@ -1,4 +1,4 @@
-// Returns a random DNA base
+
 // Returns a random DNA base
 const returnRandBase = () => {
   const dnaBases = ['A', 'T', 'C', 'G']
@@ -19,6 +19,8 @@ const pAequorFactory = (specimenNum, dna) => {
     specimenNum: specimenNum,
     dna: dna,
     mutate() {
+      //chooses a random index in the current dna specimen 
+      //and mutates it to a base that isn't the same as the location
       const randomIndex = Math.floor(Math.random() * this.dna.length);
       const currentBase = this.dna[randomIndex];
       const possibleBases = ["A", "T", "C", "G"].filter(
@@ -44,6 +46,8 @@ const pAequorFactory = (specimenNum, dna) => {
       );
     },
     willLikelySurvive() {
+      // If there is a higher instances of C and G in the dna 
+      //strand it is more likely to survive
       const currDna = this.dna.join("");
       let count = 0;
       for (let i = 0; i < this.dna.length; i++) {
@@ -64,7 +68,7 @@ const survivability = (survive) => {
 };
 
 const makeInstances = () => {
-  //make instance, check survivability, if good put in array
+  //makes an array of 30 instances with unique specimen numbers
   count = 0;
   const dnaInstances = [];
   do {
@@ -83,16 +87,16 @@ const makeInstances = () => {
 
 console.log(makeInstances()); // create 30 Instances for Later research
 
-const myAequor = pAequorFactory(1, mockUpStrand());
+const myAequor = pAequorFactory(1, mockUpStrand()); // create an instance
 console.log("Specimen #1: ", myAequor.dna);
 
-const mutatedDNA = myAequor.mutate();
+const mutatedDNA = myAequor.mutate(); //mutate a random index to another base
 console.log("Mutated #1: ", mutatedDNA);
 
-const comparer = mockUpStrand();
+const comparer = mockUpStrand();  //compare a new strand with myAequor
 console.log("Specimen #2: ", comparer);
 myAequor.compareDNA(comparer);
 
-const survival = myAequor.willLikelySurvive();
+const survival = myAequor.willLikelySurvive(); //check the likelyhood of survival
 console.log(survivability(survival));
 
