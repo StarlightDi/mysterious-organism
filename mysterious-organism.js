@@ -1,4 +1,3 @@
-
 // Returns a random DNA base
 const returnRandBase = () => {
   const dnaBases = ['A', 'T', 'C', 'G']
@@ -30,7 +29,7 @@ const pAequorFactory = (specimenNum, dna) => {
       this.dna[randomIndex] = newBase;
       return this.dna;
     },
-     compareDNA(pAeqour) {
+    compareDNA(pAeqour) {
       //compare pAeqour.dna with this.dna
       const newpAeqour = pAeqour.join("");
       const currDna = this.dna.join("");
@@ -59,44 +58,70 @@ const pAequorFactory = (specimenNum, dna) => {
       console.log(`${count.toFixed(2)}%`);
       if (count >= 60) return true;
       else return false;
+    },
+    survivability(survive) {
+      return survive ? "This sample has a good chance of survival." : "This sample has a bad chance of survival.";
+    },
+    makeInstances() {
+      //makes an array of 30 instances with unique specimen numbers
+      count = 0;
+      const dnaInstances = [];
+      do {
+       const newInst = pAequorFactory(count+100, mockUpStrand());
+        const survival = newInst.willLikelySurvive();
+        console.log(newInst.survivability(survival));
+        if(survival) {
+          dnaInstances.push(newInst);
+          count++;
+        }
+      } while (count < 30);
+      return dnaInstances;
+    },
+    complementStrand(dna)  {
+      // make a stand that swaps As for Ts and Cs for Gs and visa versa
+      const newStrand = [];
+      for (i = 0; i < dna.length; i++) {
+        switch (dna[i]) {
+          case 'A':
+            newStrand.push('T');
+            break;
+          case 'T':
+            newStrand.push('A');
+            break;
+          case 'C':
+            newStrand.push('G');
+            break;
+          case 'G':
+            newStrand.push('C');
+            break;
+        }
+      }
+      return newStrand;
     }
   }
 };
 
-const survivability = (survive) => {
-  return survive ? "This sample has a good chance of survival." : "This sample has a bad chance of survival.";
-};
+// create an instance
+const myAequor = pAequorFactory(1, mockUpStrand()); 
 
-const makeInstances = () => {
-  //makes an array of 30 instances with unique specimen numbers
-  count = 0;
-  const dnaInstances = [];
-  do {
-    const newInst = pAequorFactory(count+100, mockUpStrand());
-    const survival = newInst.willLikelySurvive();
+// create 30 Instances for Later research
+console.log(myAequor.makeInstances()); 
 
-    console.log(survivability(survival));
-    if(survival) {
-      dnaInstances.push(newInst);
-      count++;
-    }
-  } while (count < 30);
-
-  return dnaInstances;
-}
-
-console.log(makeInstances()); // create 30 Instances for Later research
-
-const myAequor = pAequorFactory(1, mockUpStrand()); // create an instance
 console.log("Specimen #1: ", myAequor.dna);
 
-const mutatedDNA = myAequor.mutate(); //mutate a random index to another base
+//mutate a random index to another base
+const mutatedDNA = myAequor.mutate(); 
 console.log("Mutated #1: ", mutatedDNA);
 
-const comparer = mockUpStrand();  //compare a new strand with myAequor
+//compare a new strand with myAequor
+const comparer = mockUpStrand();
 console.log("Specimen #2: ", comparer);
 myAequor.compareDNA(comparer);
 
-const survival = myAequor.willLikelySurvive(); //check the likelyhood of survival
-console.log(survivability(survival));
+//check the likelyhood of survival
+const survival = myAequor.willLikelySurvive();
+console.log(myAequor.survivability(survival));
 
+//creates a complement strand swapping As for Ts and Gs for Cs and visa versa
+console.log("Specimen #1: ", myAequor.dna);
+console.log("Complement:  ", myAequor.complementStrand(myAequor.dna));
